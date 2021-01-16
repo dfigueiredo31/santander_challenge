@@ -26,5 +26,10 @@ namespace santander_challenge.Controllers
 
             return View();
         }
+
+        public ActionResult Pesquisa()
+        {
+            return View();
+        }
     }
 }
