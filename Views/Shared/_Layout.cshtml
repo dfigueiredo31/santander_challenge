@@ -9,7 +9,7 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
     <nav class="navbar navbar-dark bg-dark fixed-top navbar-expand-lg">
-        @Html.ActionLink("MovieFinder", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+       <a class="navbar-brand" href="@Url.Action("Index", "Home")"><i class="fas fa-video text-white"></i></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-links">
             <span class="navbar-toggler-icon"></span>
         </button>

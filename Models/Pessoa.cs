@@ -9,6 +9,8 @@ namespace santander_challenge.Models
     {
         public int ID { get; set; }
         public string Nome { get; set; }
-        public IEnumerable<Filme> Filmes { get; set; }
+        public string Funcao { get; set; }
+        public string Foto { get; set; }
+        //public IEnumerable<Filme> Filmes { get; set; }
     }
 }

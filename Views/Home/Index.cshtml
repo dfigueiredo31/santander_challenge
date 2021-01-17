@@ -1,12 +1,16 @@
-﻿@{
+﻿@using santander_challenge.Models
+@model Pessoa
+
+@{
     ViewBag.Title = "Pesquisa";
 }
 
 <h1 class="text-center">MovieFinder</h1>
-<form>
+@using (Html.BeginForm("GetInfo", "Home"))
+{
     <div class="row">
         <div class="input-group justify-content-center">
-            <input type="text" class="form-control form-control-lg col-lg-8" placeholder="Nome de ator ou de realizador..."/>
+            @Html.TextBoxFor(m => m.Nome, new { @class="form-control form-control-lg col-lg-8", @placeholder = "Nome de ator ou de realizador..." })
             <div class="input-group-append">
                 <button class="btn btn-dark" type="submit">
                     <i class="fa fa-search"></i>
@@ -14,4 +18,4 @@
             </div>
         </div>
     </div>
-</form>
+}

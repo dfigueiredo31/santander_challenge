@@ -5,4 +5,12 @@
 }
 
 <h2>Pesquisa</h2>
+@Model.ListaFilmes.Count()
 
+@foreach(Filme f in Model.ListaFilmes)
+{
+    <p>@f.Titulo</p>
+    <p>@f.Poster</p>
+    <p>@f.Descricao</p>
+    <hr />
+}
