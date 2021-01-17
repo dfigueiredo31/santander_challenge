@@ -47,7 +47,7 @@ namespace santander_challenge.Controllers
             using(var cliente = new HttpClient())
             {
                 cliente.BaseAddress = enderecoAPI;
-                var resposta = cliente.GetAsync("/3/search/person?api_key=3d187e4ded765515e07940389b933fa8&query=" + pesquisa.Nome);
+                var resposta = cliente.GetAsync("/3/search/person?api_key=3d187e4ded765515e07940389b933fa8&language=pt-BR&query=" + pesquisa.Nome);
                 resposta.Wait();
                 if (resposta.Result.IsSuccessStatusCode)
                 {
@@ -70,6 +70,37 @@ namespace santander_challenge.Controllers
 
                     foreach (JToken filme in conhecidoPor)
                     {
+                        //pedir o cast deste filme
+                        var cast = cliente.GetAsync($"/3/movie/{filme.SelectToken("id")}/credits?api_key=3d187e4ded765515e07940389b933fa8");
+                        var castResposta = cast.Result.Content.ReadAsStringAsync();
+                        castResposta.Wait();
+
+                        JObject castRespostaJson = JObject.Parse(castResposta.Result);
+                        JArray castArray = (JArray)castRespostaJson.SelectToken("cast");
+
+
+                        List<Pessoa> atores = new List<Pessoa>();
+                        List<Pessoa> equipaTecnica = new List<Pessoa>();
+                        
+                        foreach(JToken membroCast in castArray)
+                        {
+                            if(membroCast.SelectToken("known_for_department").ToString() == "Acting")
+                            {
+                                atores.Add(new Pessoa
+                                {
+                                    ID = Int32.Parse(membroCast.SelectToken("id").ToString()),
+                                    Nome = membroCast.SelectToken("name").ToString()
+                                });
+                            }else if (membroCast.SelectToken("known_for_department").ToString() == "Directing")
+                            {
+                                equipaTecnica.Add(new Pessoa
+                                {
+                                    ID = Int32.Parse(membroCast.SelectToken("id").ToString()),
+                                    Nome = membroCast.SelectToken("name").ToString()
+                                });
+                            }
+                        }
+
                         filmes.Add(new Filme
                         {
                             ID = Int32.Parse(filme.SelectToken("id").ToString()),
@@ -77,7 +108,8 @@ namespace santander_challenge.Controllers
                             Descricao = filme.SelectToken("overview").ToString(),
                             DataLancamento = DateTime.Parse(filme.SelectToken("release_date").ToString()),
                             Poster = "https://image.tmdb.org/t/p/original" + filme.SelectToken("poster_path"),
-                            //TODO: protagonistas e realizador
+                            Protagonistas = atores,
+                            Realizadores = equipaTecnica
                         }); ;
                     }
 

@@ -12,7 +12,7 @@ namespace santander_challenge.Models
         public string Descricao { get; set; }
         public string Poster { get; set; }
         public DateTime DataLancamento { get; set; }
-        public Pessoa Realizador { get; set; }
+        public IEnumerable<Pessoa> Realizadores { get; set; }
         public IEnumerable<Pessoa> Protagonistas { get; set; }
     }
 }

@@ -25,7 +25,8 @@
 
 
 <div class="jumbotron text-white">
-    <h1 class="text">@Model.Pessoa.Nome</h1>
+    <h1 class="display-4">@Model.Pessoa.Nome</h1>
+    <br />
     <br />
     <br />
     <br />
@@ -41,12 +42,26 @@
                 <img src="@f.Poster" class="img-fluid" />
             </div>
             <div class="col-sm-8">
-                <h3 class="display-4">@f.Titulo</h3>
+                <h2>@f.Titulo</h2>
                 <br />
                 <h4>Sinopse</h4>
                 <p class="lead">@f.Descricao</p>
                 <h4>Ano de lançamento</h4>
                 <p class="lead">@f.DataLancamento.Year</p>
+                <h4>Elenco principal</h4>
+                <ul class="list-inline">
+                    @foreach (Pessoa p in f.Protagonistas.Take(4))
+                    {
+                        <li class="list-inline-item lead">@p.Nome</li>
+                    }
+                </ul>
+                <h4>Equipa Técnica</h4>
+                <ul class="list-inline">
+                    @foreach (Pessoa p in f.Realizadores)
+                    {
+                        <li class="list-inline-item lead">@p.Nome</li>
+                    }
+                </ul>
             </div>
         </div>
     </div>
