@@ -2,14 +2,21 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Runtime.Remoting;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using santander_challenge.Models;
+using Syncfusion.Drawing;
+using Syncfusion.Presentation;
 
 namespace santander_challenge.Controllers
 {
@@ -39,6 +46,7 @@ namespace santander_challenge.Controllers
         public ActionResult Pesquisa()
         {
             PesquisaViewModel resultados = TempData["Pesquisa"] as PesquisaViewModel;
+            TempData["Pesquisa2"] = resultados;
             return View(resultados);
         }
 
@@ -124,6 +132,35 @@ namespace santander_challenge.Controllers
                 }
                 return RedirectToAction("Index");   //TODO: redirecionar para uma pagina de erro
             }
+        }
+
+        public FileResult GerarPTT()
+        {
+            PesquisaViewModel pesquisa = TempData["Pesquisa2"] as PesquisaViewModel;
+
+            IPresentation ppt = Presentation.Create();
+
+            foreach(Filme f in pesquisa.ListaFilmes)
+            {
+                ISlide slide = ppt.Slides.Add(SlideLayoutType.TitleOnly);
+                IShape titulo = slide.Shapes[0] as IShape;
+                titulo.TextBody.AddParagraph(f.Titulo).HorizontalAlignment = HorizontalAlignmentType.Center;
+
+                using (WebClient webClient = new WebClient())
+                {
+                    byte[] imagem = webClient.DownloadData(f.Poster);
+                    using(MemoryStream memoria = new MemoryStream(imagem))
+                    {
+                        IPicture poster = slide.Pictures.AddPicture(memoria, 350, 200, 250, 250);
+                    }
+                }
+            }
+
+            MemoryStream output = new MemoryStream();
+            ppt.Save(output);
+            output.Position = 0;
+
+            return File(output, "application/vnd.openxmlformats-officedocument.presentationml.presentation", $"Filmes do {pesquisa.Pessoa.Nome}");
         }
     }
 }
