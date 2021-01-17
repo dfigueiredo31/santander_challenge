@@ -75,9 +75,10 @@ namespace santander_challenge.Controllers
                             ID = Int32.Parse(filme.SelectToken("id").ToString()),
                             Titulo = filme.SelectToken("original_title").ToString(),
                             Descricao = filme.SelectToken("overview").ToString(),
+                            DataLancamento = DateTime.Parse(filme.SelectToken("release_date").ToString()),
                             Poster = "https://image.tmdb.org/t/p/original" + filme.SelectToken("poster_path"),
                             //TODO: protagonistas e realizador
-                        });
+                        }); ;
                     }
 
                     PesquisaViewModel resultados = new PesquisaViewModel() 

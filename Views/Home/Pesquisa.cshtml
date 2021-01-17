@@ -4,13 +4,51 @@
     ViewBag.Title = "Pesquisa";
 }
 
-<h2>Pesquisa</h2>
-@Model.ListaFilmes.Count()
+<style>
+        .jumbotron {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.50), rgba(0, 0, 0, 0.50)), url( @Model.Pessoa.Foto );
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 100%;
+            -webkit-background-size: 100%;
+            -moz-background-size: 100%;
+            -o-background-size: 100%;
+            -webkit-background-size: 100%;
+            -moz-background-size: 100%;
+            -o-background-size: 100%;
+        }
+
+    .img-fluid {
+        border-radius: 0.25rem 0 0 0.25rem;
+    }
+</style>
+
+
+<div class="jumbotron text-white">
+    <h1 class="text">@Model.Pessoa.Nome</h1>
+    <br />
+    <br />
+    <br />
+    <br />
+    <a class="btn btn-outline-light btn-lg" href="#" role="button"><i class="fas fa-file-powerpoint"></i> Exportar Lista de Filmes</a>
+</div>
 
 @foreach(Filme f in Model.ListaFilmes)
 {
-    <p>@f.Titulo</p>
-    <p>@f.Poster</p>
-    <p>@f.Descricao</p>
-    <hr />
+    <div class="card">
+        <div class="row">
+            <div class="col-sm-4">
+                <img src="@f.Poster" class="img-fluid" />
+            </div>
+            <div class="col-sm-8">
+                <h3 class="display-4">@f.Titulo</h3>
+                <br />
+                <h4>Sinopse</h4>
+                <p class="lead">@f.Descricao</p>
+                <h4>Ano de lançamento</h4>
+                <p class="lead">@f.DataLancamento.Year</p>
+            </div>
+        </div>
+    </div>
+    <br />
 }
