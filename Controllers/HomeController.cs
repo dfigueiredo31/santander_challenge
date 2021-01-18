@@ -22,7 +22,7 @@ namespace santander_challenge.Controllers
 {
     public class HomeController : Controller
     {
-        static readonly Uri enderecoAPI = new Uri("https://api.themoviedb.org");
+        readonly Uri enderecoAPI = new Uri("https://api.themoviedb.org");
 
         public ActionResult Index()
         {
